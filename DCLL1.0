@@ -1,0 +1,87 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.previous = None
+
+
+class Linkedlist:
+    def __init__(self):
+        self.head = None
+
+    def insert_end(self, new_node):
+        if self.head is None:  # If there are no nodes in the list
+            self.head = new_node  # Make the new node the head node
+            new_node.next = new_node  # Make the next pointer of the new node point to its self
+            new_node.previous = new_node  # Make the previous pointer of the new node point to its self
+            return
+        last_node = self.head
+        while last_node.next is not self.head:  # While not at last node;
+            last_node = last_node.next  # Traverse
+        last_node.next = new_node  # Make the next pointer of the last node point to the new node
+        new_node.previous = last_node  # Make the previous pointer of the new node point to the last node
+        new_node.next = self.head  # Make the next pointer of the new node point to the head node
+        self.head.previous = new_node  # Make the previous pointer of the head node point to the new node
+
+    def insert_head(self, new_node):
+        if self.head is None:
+            self.head = new_node
+            new_node.next = new_node
+            new_node.previous = new_node
+            return
+        new_node.next = self.head  # Make the new pointer of the new node point to the head node
+        self.head.previous.next = new_node  # Make the next pointer of the last node point to the new node
+        new_node.previous = self.head.previous  # Make the previous pointer of the new node point to the last node
+        self.head.previous = new_node  # Make the previous pointer of the head node point to the new node
+        if new_node is not self.head:  # If the new node is not currently the head node;
+            self.head = new_node  # Then make the head node the new node
+
+    def delete_head(self):
+        if self.head is None:  # If there are no nodes in the list;
+            print('List empty')  # Tell the user the list is empty
+            return
+        second_node = self.head.next  # Save the second node in a temporary variable
+        last_node = self.head.previous  # Save the last node in a temporary variable
+        last_node.next = second_node  # Make the next pointer of the last node point to the second node
+        second_node.previous = last_node  # Make the previous pointer of the second node point to the last node
+        self.head.next = None  # Nullify the next pointer of the head node
+        self.head.previous = None  # Nullify the previous pointer of the head node
+        if second_node is not self.head:  # If the second node is not currently the head node;
+            self.head = second_node  # Make the second node the head node
+
+    def delete_end(self):
+        if self.head is None:  # If there are no nodes in the list;
+            print('List is empty')  # Tell the user the list is empty
+            return
+        current_node = self.head
+        while current_node.next is not self.head:  # While not at the last node;
+            current_node = current_node.next  # Traverse
+        current_node.previous.next = self.head  # Make the next pointer of second to the last node point to head node
+        self.head.previous = current_node.previous  # Make the previous pointer of the head node point to this node
+        current_node.next = None  # Nullify the next pointer of the last node
+        current_node.previous = None  # Nullify the previous pointer of the last node
+
+    def print_list(self):
+        if self.head is None:  # If there are no nodes in the list;
+            print('List is empty')  # Tell the user the list is empty
+            return
+        current_node = self.head
+        while True:  # While the current node is the head node;
+            print(current_node.data)  # Print the data of the node
+            if current_node.next is self.head:  # When the last node is reached;
+                break  # Stop traversing
+            current_node = current_node.next  # Else, traverse to the next node
+
+
+node1 = Node('James')
+node2 = Node('Irvin')
+node3 = Node('Jane')
+node4 = Node('Jess')
+linked_list = Linkedlist()
+linked_list.insert_end(node1)
+linked_list.insert_end(node2)
+linked_list.insert_end(node3)
+linked_list.insert_head(node4)
+linked_list.delete_end()
+linked_list.delete_end()
+linked_list.print_list()
